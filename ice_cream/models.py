@@ -33,6 +33,11 @@ class Product(models.Model):
         default=True,
     )
 
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['-id']
 
 
 
