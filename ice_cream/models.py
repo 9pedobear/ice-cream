@@ -40,6 +40,31 @@ class Product(models.Model):
         ordering = ['-id']
 
 
+class Employer(models.Model):
+    photo = models.ImageField(
+        upload_to='image/employers/',
+        blank=True
+    )
+    name = models.CharField(
+        max_length=222
+    )
+    position = models.CharField(
+        max_length=222
+    )
+    created = models.DateTimeField(
+        auto_now_add=True,
+    )
+    updated = models.DateTimeField(
+        auto_now=True,
+    )
+    is_published = models.BooleanField(
+        default=True,
+    )
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['-id']
 
 
 
