@@ -22,25 +22,19 @@ def gallery(request):
     return render(request, 'ice_cream/gallery.html')
 
 def product(request):
-    return render(request, 'ice_cream/product.html')
+    products = Product.objects.all()
+    return render(request, 'ice_cream/product.html', {'products' : products})
 
 def service(request):
     return render(request, 'ice_cream/service.html')
 
 
-def handle_uploaded_file(f):
-    with open('media/images/'+f, 'wb+') as destination:
-        for chunk in f.chunks():
-            destination.write(chunk)
-
 def create_product(request):
-    context = {}
-    if request.POST:
+    if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
-            handle_uploaded_file(request.POST["image"])
-            return redirect('/')
+            form.save()
+            return redirect('index')
     else:
         form = ProductForm()
-    context['prod'] = form
-    return render(request, "ice_cream/create_product.html", context)
+    return render(request, 'ice_cream/create_product.html', {'form': form})

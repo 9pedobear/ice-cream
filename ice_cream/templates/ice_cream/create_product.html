@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<form action="{% url 'create_product' %}" method="post">
+<form method="post" enctype="multipart/form-data">
     <div class="container">
         <br>
         <br>
         <br>
         <br>
         {% csrf_token %}
-        {{ prod }}
+        {{ form }}
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 </form>
