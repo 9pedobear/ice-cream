@@ -1,7 +1,47 @@
 from django.shortcuts import render, redirect
 from .models import Product, Employer
-from .forms import ProductForm
-from django.http import HttpResponse
+from .forms import ProductForm, UserLoginForm
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
+from django.contrib.auth import login, logout
+
+
+
+def register_user(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Вы успешно зарегались')
+            return redirect('login')
+        else:
+            messages.error(request, 'Что-то пошло не так')
+    else:
+        form = UserCreationForm()
+    return render(request, 'ice_cream/register.html', {'form': form})
+
+
+
+def login_user(request):
+    if request.method == "POST":
+        form = UserLoginForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            messages.success(request, 'Успех')
+            return redirect('/')
+        else:
+            messages.error(request, 'Неудача')
+    else:
+        form = UserLoginForm()
+    return render(request, 'ice_cream/login.html', {'form': form})
+
+def logout_user(request):
+    logout(request)
+    return redirect('/')
+
+
+
 
 def index(request):
     products = Product.objects.all()[:4]
